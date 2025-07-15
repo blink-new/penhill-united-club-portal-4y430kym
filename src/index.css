@@ -143,4 +143,57 @@
     break-inside: avoid;
     margin-bottom: 1rem;
   }
+  
+  /* Voice search animations */
+  .voice-pulse {
+    animation: voice-pulse 2s infinite;
+  }
+  
+  @keyframes voice-pulse {
+    0%, 100% { transform: scale(1); opacity: 70%; }
+    50% { transform: scale(1.1); opacity: 100%; }
+  }
+  
+  /* Swipe to save gesture */
+  .swipe-save {
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+  
+  .swipe-save:hover {
+    transform: translateX(4px);
+    background-color: rgb(var(--primary), 0.05);
+  }
+  
+  /* Badge notification glow */
+  .badge-glow {
+    box-shadow: 0 0 20px rgb(var(--accent), 0.5);
+    animation: badge-glow 2s ease-in-out infinite alternate;
+  }
+  
+  @keyframes badge-glow {
+    from { box-shadow: 0 0 20px rgb(var(--accent), 0.5); }
+    to { box-shadow: 0 0 30px rgb(var(--accent), 0.8); }
+  }
+  
+  /* Performance monitoring indicators */
+  .performance-indicator {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .performance-indicator::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 20%), transparent);
+    animation: shimmer 2s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
 }

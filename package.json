@@ -61,9 +61,11 @@
     "react-resizable-panels": "^3.0.3",
     "react-responsive": "^10.0.1",
     "react-router-dom": "^7.6.3",
+    "react-speech-kit": "^3.0.1",
     "recharts": "^2.15.4",
     "sonner": "^2.0.6",
     "vaul": "^1.1.2",
+    "web-push": "^3.6.7",
     "zod": "^4.0.5"
   },
   "devDependencies": {

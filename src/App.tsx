@@ -20,7 +20,10 @@ import {
   Trophy,
   Users,
   X,
-  Zap
+  Zap,
+  Heart,
+  Bookmark,
+  MoreHorizontal
 } from 'lucide-react'
 import { Button } from './components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from './components/ui/card'
@@ -28,6 +31,11 @@ import { Badge } from './components/ui/badge'
 import { Input } from './components/ui/input'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs'
 import { Avatar, AvatarFallback, AvatarImage } from './components/ui/avatar'
+import { VoiceSearch } from './components/VoiceSearch'
+import { NotificationCenter } from './components/NotificationCenter'
+import { UserProfile } from './components/UserProfile'
+import { BadgeNotification } from './components/BadgeNotification'
+import { useGamification } from './hooks/useGamification'
 
 interface NewsItem {
   id: string
@@ -71,6 +79,7 @@ function App() {
   const [isDarkMode, setIsDarkMode] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [currentTime, setCurrentTime] = useState(new Date())
+  const [savedPosts, setSavedPosts] = useState<string[]>([])
   const [quickAccessItems, setQuickAccessItems] = useState<QuickAccessItem[]>([
     { id: '1', title: 'Team Selection', icon: <Users className="w-5 h-5" />, href: '#', lastUsed: Date.now() - 3600000 },
     { id: '2', title: 'Match Reports', icon: <Trophy className="w-5 h-5" />, href: '#', lastUsed: Date.now() - 7200000 },
@@ -82,12 +91,15 @@ function App() {
   
   const lastScrollY = useRef(0)
   const scrollDirection = useRef<'up' | 'down'>('up')
+  
+  // Initialize gamification
+  const { trackActivity } = useGamification()
 
   const newsItems: NewsItem[] = [
     {
       id: '1',
       title: 'Penhill United Secures Victory in Derby Match',
-      excerpt: 'A thrilling 3-2 victory against local rivals showcases the team\\'s resilience and tactical prowess.',
+      excerpt: 'A thrilling 3-2 victory against local rivals showcases the team\'s resilience and tactical prowess.',
       image: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&h=250&fit=crop',
       date: '2 hours ago',
       category: 'Match Report',
@@ -161,14 +173,14 @@ function App() {
     {
       id: '2',
       platform: 'twitter',
-      content: 'Great training session today! The team is looking sharp for Saturday\\'s big match. ⚽',
+      content: 'Great training session today! The team is looking sharp for Saturday\'s big match. ⚽',
       likes: 89,
       date: '6h'
     },
     {
       id: '3',
       platform: 'instagram',
-      content: 'Behind the scenes: Stadium preparations for this weekend\\'s derby! 🏟️',
+      content: 'Behind the scenes: Stadium preparations for this weekend\'s derby! 🏟️',
       image: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=300&h=300&fit=crop',
       likes: 156,
       date: '1d'
@@ -243,6 +255,28 @@ function App() {
           : item
       ).sort((a, b) => b.lastUsed - a.lastUsed)
     )
+    trackActivity('event_attended')
+  }
+
+  const handleNewsRead = (newsId: string) => {
+    trackActivity('news_read')
+  }
+
+  const handleSocialShare = (postId: string) => {
+    trackActivity('social_share')
+  }
+
+  const handleSavePost = (postId: string) => {
+    setSavedPosts(prev => 
+      prev.includes(postId) 
+        ? prev.filter(id => id !== postId)
+        : [...prev, postId]
+    )
+  }
+
+  const handleVoiceCommand = (command: string, response: string) => {
+    console.log('Voice command:', command, 'Response:', response)
+    trackActivity('event_attended') // Track voice interaction
   }
 
   const getNextMatch = () => {
@@ -271,6 +305,9 @@ function App() {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Badge Notification System */}
+      <BadgeNotification />
+      
       {/* Smart Sticky Header */}
       <motion.header
         className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b"
@@ -327,10 +364,11 @@ function App() {
               )}
             </AnimatePresence>
 
-            <Button variant="ghost" size="icon" className="relative">
-              <Bell className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full"></span>
-            </Button>
+            {/* Voice Search */}
+            <VoiceSearch onCommand={handleVoiceCommand} />
+
+            {/* Notification Center */}
+            <NotificationCenter />
 
             <Button
               variant="ghost"
@@ -339,6 +377,9 @@ function App() {
             >
               {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </Button>
+
+            {/* User Profile */}
+            <UserProfile />
 
             <Button
               variant="ghost"
@@ -834,9 +875,24 @@ function App() {
                       <p className="text-sm mb-3">{post.content}</p>
                       
                       <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span>❤️ {post.likes} likes</span>
-                        <Button size="sm" variant="ghost" className="h-6 px-2">
-                          <Share2 className="w-3 h-3" />
+                        <div className="flex items-center gap-3">
+                          <span>❤️ {post.likes} likes</span>
+                          <Button 
+                            size="sm" 
+                            variant="ghost" 
+                            className="h-6 px-2"
+                            onClick={() => handleSocialShare(post.id)}
+                          >
+                            <Share2 className="w-3 h-3" />
+                          </Button>
+                        </div>
+                        <Button 
+                          size="sm" 
+                          variant="ghost" 
+                          className={`h-6 px-2 ${savedPosts.includes(post.id) ? 'text-primary' : ''}`}
+                          onClick={() => handleSavePost(post.id)}
+                        >
+                          <Bookmark className={`w-3 h-3 ${savedPosts.includes(post.id) ? 'fill-current' : ''}`} />
                         </Button>
                       </div>
                     </CardContent>
