@@ -28,8 +28,7 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem
-  ;
+    --radius: 0.5rem;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -37,7 +36,8 @@
     --sidebar-accent: 240 4.8% 95.9%;
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%}
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
 
   .dark {
     --background: 222 84% 5%;
@@ -63,8 +63,7 @@
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%
-  ;
+    --chart-5: 340 75% 55%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -72,7 +71,8 @@
     --sidebar-accent: 240 3.7% 15.9%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%}
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
 }
 
 @layer base {
@@ -150,8 +150,15 @@
   }
   
   @keyframes voice-pulse {
-    0%, 100% { transform: scale(1); opacity: 70%; }
-    50% { transform: scale(1.1); opacity: 100%; }
+    0%, 100% { 
+      transform: scale(1); 
+      opacity: 70%; 
+    }
+
+    50% { 
+      transform: scale(1.1); 
+      opacity: 100%; 
+    }
   }
   
   /* Swipe to save gesture */
@@ -171,8 +178,13 @@
   }
   
   @keyframes badge-glow {
-    from { box-shadow: 0 0 20px rgb(var(--accent), 0.5); }
-    to { box-shadow: 0 0 30px rgb(var(--accent), 0.8); }
+    from { 
+      box-shadow: 0 0 20px rgb(var(--accent), 0.5); 
+    }
+
+    to { 
+      box-shadow: 0 0 30px rgb(var(--accent), 0.8); 
+    }
   }
   
   /* Performance monitoring indicators */
@@ -193,7 +205,12 @@
   }
   
   @keyframes shimmer {
-    0% { left: -100%; }
-    100% { left: 100%; }
+    0% { 
+      left: -100%; 
+    }
+
+    100% { 
+      left: 100%; 
+    }
   }
 }

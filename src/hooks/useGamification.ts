@@ -120,10 +120,7 @@ export const useGamification = () => {
         console.error('Error loading user stats:', error)
       }
     }
-
-    // Award first visit badge
-    trackActivity('first_visit')
-  }, [trackActivity])
+  }, [])
 
   // Save progress to localStorage
   useEffect(() => {
@@ -133,6 +130,15 @@ export const useGamification = () => {
   useEffect(() => {
     localStorage.setItem('penhill_user_stats', JSON.stringify(userStats))
   }, [userStats])
+
+  // Award first visit badge on mount
+  useEffect(() => {
+    const hasVisited = localStorage.getItem('penhill_first_visit')
+    if (!hasVisited) {
+      localStorage.setItem('penhill_first_visit', 'true')
+      updateBadgeProgress('first_visit', 1)
+    }
+  }, [updateBadgeProgress])
 
   const updateBadgeProgress = useCallback((badgeId: string, progressToAdd: number) => {
     setBadges(prev => prev.map(badge => {

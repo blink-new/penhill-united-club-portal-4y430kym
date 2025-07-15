@@ -35,6 +35,9 @@ import { VoiceSearch } from './components/VoiceSearch'
 import { NotificationCenter } from './components/NotificationCenter'
 import { UserProfile } from './components/UserProfile'
 import { BadgeNotification } from './components/BadgeNotification'
+import { PerformanceMonitor } from './components/PerformanceMonitor'
+import { AdvancedSearch } from './components/AdvancedSearch'
+import { MemberDashboard } from './components/MemberDashboard'
 import { useGamification } from './hooks/useGamification'
 
 interface NewsItem {
@@ -308,6 +311,9 @@ function App() {
       {/* Badge Notification System */}
       <BadgeNotification />
       
+      {/* Performance Monitor */}
+      <PerformanceMonitor />
+      
       {/* Smart Sticky Header */}
       <motion.header
         className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b"
@@ -363,6 +369,9 @@ function App() {
                 </motion.div>
               )}
             </AnimatePresence>
+
+            {/* Advanced Search */}
+            <AdvancedSearch />
 
             {/* Voice Search */}
             <VoiceSearch onCommand={handleVoiceCommand} />
@@ -477,6 +486,13 @@ function App() {
                 </Button>
               </div>
             </motion.div>
+          </div>
+        </section>
+
+        {/* Member Dashboard */}
+        <section className=\"py-12\">
+          <div className=\"container mx-auto px-4\">
+            <MemberDashboard />
           </div>
         </section>
 
