@@ -136,9 +136,19 @@ export const useGamification = () => {
     const hasVisited = localStorage.getItem('penhill_first_visit')
     if (!hasVisited) {
       localStorage.setItem('penhill_first_visit', 'true')
-      updateBadgeProgress('first_visit', 1)
+      setBadges(prev => prev.map(badge => {
+        if (badge.id === 'first_visit') {
+          return {
+            ...badge,
+            progress: 1,
+            earned: true,
+            earnedAt: new Date()
+          }
+        }
+        return badge
+      }))
     }
-  }, [updateBadgeProgress])
+  }, [])
 
   const updateBadgeProgress = useCallback((badgeId: string, progressToAdd: number) => {
     setBadges(prev => prev.map(badge => {
